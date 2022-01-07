@@ -16,21 +16,19 @@ unsigned bfs(unsigned start, unsigned target) {
         auto [time, cur] = pq.top();
         pq.pop();
 
-        if (cur > 0 && (time + 1 < visited[cur - 1] || !visited[cur - 1])) {
+        if (cur * 2 < 100001 && !visited[cur * 2]) {
+            pq.push({time, cur * 2});
+            visited[cur * 2] = time;
+        }
+
+        if (cur > 0 && !visited[cur - 1]) {
             pq.push({time + 1, cur - 1});
             visited[cur - 1] = time + 1;
         }
 
-        if (cur < 100000 &&
-            (time + 1 < visited[cur + 1] || !visited[cur + 1])) {
+        if (cur < 100000 && !visited[cur + 1]) {
             pq.push({time + 1, cur + 1});
             visited[cur + 1] = time + 1;
-        }
-
-        if (cur * 2 < 100001 &&
-            (time < visited[cur * 2] || !visited[cur * 2])) {
-            pq.push({time, cur * 2});
-            visited[cur * 2] = time;
         }
     }
 
