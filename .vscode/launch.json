@@ -15,9 +15,9 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "logging": {
-                "engineLogging": true
-            },
+            // "logging": {
+            //     "engineLogging": true
+            // },
             "miDebuggerPath": "C:/Program Files/mingw64/bin/gdb.exe",
             "setupCommands": [
                 {
