@@ -1,28 +1,26 @@
 #include <algorithm>
-#include <bitset>
 #include <iostream>
+#include <limits>
+#include <queue>
 #include <vector>
 
-int travelSalesman(int src, int ret, std::bitset<16>& toVisit,
-                   const std::vector<std::vector<int>>& weights) {
-    static std::vector<std::vector<int>> dp(16, std::vector<int>(1 << 16));
+void bfs(std::vector<std::vector<int>>& dp,
+         const std::vector<std::vector<int>>& adj, const int& N) {
+    std::queue<std::pair<int, int>> Q;
+    Q.push({0, 1});
 
-    if (toVisit.none()) return weights[src][ret];
-    if (dp[src][toVisit.to_ulong()]) return dp[src][toVisit.to_ulong()];
+    while (!Q.empty()) {
+        auto [u, state] = Q.front();
+        Q.pop();
 
-    int min = 0;
-    for (int i = 0; i < 16; ++i) {
-        if (toVisit[i] && weights[src][i]) {
-            toVisit[i] = 0;
-            int dist = travelSalesman(i, ret, toVisit, weights);
-            if (int sumDist = dist + weights[src][i];
-                dist && (sumDist < min || !min))
-                min = sumDist;
-            toVisit[i] = 1;
-        }
+        for (int v = 1; v < N; ++v)
+            if (!(state & (1 << v)) && adj[u][v] &&
+                (dp[u][state] + adj[u][v] < dp[v][state | (1 << v)] ||
+                 !dp[v][state | (1 << v)])) {
+                dp[v][state | (1 << v)] = dp[u][state] + adj[u][v];
+                Q.push({v, state | (1 << v)});
+            }
     }
-
-    return dp[src][toVisit.to_ulong()] = min;
 }
 
 int main() {
@@ -32,17 +30,20 @@ int main() {
     int N;
     std::cin >> N;
 
-    std::vector<std::vector<int>> weights(N, std::vector<int>(N));
-    for (auto& row : weights)
-        for (auto& weight : row) std::cin >> weight;
+    std::vector<std::vector<int>> adj(N, std::vector<int>(N));
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < N; ++j) std::cin >> adj[i][j];
 
-    std::bitset<16> toVisit;
-    toVisit.set();
+    std::vector<std::vector<int>> dp(N, std::vector<int>(1 << N));
+    bfs(dp, adj, N);
 
-    toVisit[0] = 0;
-    for (int i = N; i < 16; ++i) toVisit[i] = 0;
+    int minDist = std::numeric_limits<int>::max();
+    for (int i = 1; i < N; ++i)
+        if (dp[i][(1 << N) - 1] + adj[i][0] < minDist && dp[i][(1 << N) - 1] &&
+            adj[i][0])
+            minDist = dp[i][(1 << N) - 1] + adj[i][0];
 
-    std::cout << travelSalesman(0, 0, toVisit, weights) << '\n';
+    std::cout << minDist << '\n';
 
     return 0;
 }
