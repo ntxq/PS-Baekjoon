@@ -89,5 +89,6 @@
         "spanstream": "cpp",
         "stacktrace": "cpp",
         "syncstream": "cpp"
-    }
+    },
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, UseTab: Never }",
 }
