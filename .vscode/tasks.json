@@ -10,7 +10,7 @@
                 "-Wall",
                 "-Wextra",
                 "-Wpedantic",
-                "-Werror",
+                // "-Werror",
                 "-g",
                 "${file}",
                 "-o",
