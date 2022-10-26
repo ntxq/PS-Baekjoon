@@ -45,5 +45,5 @@
 *.vsix
 
 # Temporary Files
-main.cpp
+main.*
 main
