@@ -12,6 +12,9 @@
                 "-Wpedantic",
                 "-Werror",
                 "-g",
+                "-fsanitize=address",
+                "-fno-omit-frame-pointer",
+                "-fsanitize=undefined",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
