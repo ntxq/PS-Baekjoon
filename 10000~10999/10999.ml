@@ -31,7 +31,7 @@ module LazySegmentTree = struct
   let update ({ n; tree; lazy_tree } as segtree) l r addend =
     let rec loop v tl tr l r =
       push segtree v tl tr;
-      if l > tr || r < tl then ()
+      if l > r then ()
       else if l <= tl && tr <= r then (
         tree.(v) <-
           Int64.add tree.(v) (Int64.mul addend (Int64.of_int (tr - tl + 1)));
@@ -40,8 +40,8 @@ module LazySegmentTree = struct
           lazy_tree.((2 * v) + 1) <- Int64.add lazy_tree.((2 * v) + 1) addend))
       else
         let tm = (tl + tr) / 2 in
-        loop (2 * v) tl tm l r;
-        loop ((2 * v) + 1) (tm + 1) tr l r;
+        loop (2 * v) tl tm l (min tm r);
+        loop ((2 * v) + 1) (tm + 1) tr (max (tm + 1) l) r;
         tree.(v) <- Int64.add tree.(2 * v) tree.((2 * v) + 1)
     in
     loop 1 0 (n - 1) l r;
@@ -50,11 +50,13 @@ module LazySegmentTree = struct
   let query ({ n; tree; _ } as segtree) l r =
     let rec loop v tl tr l r =
       push segtree v tl tr;
-      if l > tr || r < tl then 0L
+      if l > r then 0L
       else if l <= tl && tr <= r then tree.(v)
       else
         let tm = (tl + tr) / 2 in
-        Int64.add (loop (2 * v) tl tm l r) (loop ((2 * v) + 1) (tm + 1) tr l r)
+        Int64.add
+          (loop (2 * v) tl tm l (min tm r))
+          (loop ((2 * v) + 1) (tm + 1) tr (max (tm + 1) l) r)
     in
     (loop 1 0 (n - 1) l r, segtree)
 end
