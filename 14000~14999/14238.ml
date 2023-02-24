@@ -11,6 +11,14 @@ let init_schedule dp =
   in
   loop 0 0
 
+let find_some dp =
+  let rec loop x y =
+    if x = 3 then None
+    else if y = 3 then loop (x + 1) 0
+    else match dp.(x).(y) with Some s -> Some s | None -> loop x (y + 1)
+  in
+  loop 0 0
+
 let valid_scehdule a b c =
   let dp =
     Array.init (a + 1) ~f:(fun _ ->
@@ -43,17 +51,7 @@ let valid_scehdule a b c =
 
           loop x y z p (q + 1)
   in
-
   loop 0 0 0 0 0;
-
-  let find_some dp =
-    let rec loop x y =
-      if x = 3 then None
-      else if y = 3 then loop (x + 1) 0
-      else match dp.(x).(y) with Some s -> Some s | None -> loop x (y + 1)
-    in
-    loop 0 0
-  in
 
   find_some dp.(a).(b).(c)
 
