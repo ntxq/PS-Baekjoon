@@ -4,7 +4,7 @@ Subproblem:
 Recurrence:
     dp[N][a][b][c] = 
         Singer A sing + Singer B sing + Singer C sing
-        - (A and B sing) - (A and C sing) - (B and C sing)
+        + (A and B sing) + (A and C sing) + (B and C sing)
         + (A, B, C sing)
 '''
 
