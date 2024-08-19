@@ -91,7 +91,10 @@
         "syncstream": "cpp",
         "queue": "cpp",
         "format": "cpp",
-        "text_encoding": "cpp"
+        "text_encoding": "cpp",
+        "generator": "cpp",
+        "print": "cpp",
+        "stdfloat": "cpp"
     },
     "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, UseTab: Never }",
 }
